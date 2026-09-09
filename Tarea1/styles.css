@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+body{
+    margin:0;
+    font-family: "Work Sans";
+    background-color: #ddd;
+}
+
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    height: 30px;
+}
+ul{
+    font-family: "JetBrains Mono";
+    color: #555;
+    display: flex;
+    gap: 15px;
+    list-style: none;
+}
+
+.titulo{
+   font-family: "Work Sans";
+   font-size: 25px;
+   font-weight: bold;
+    color: #007979;
+}
+
+.login-btn{
+    font-family: "Work Sans";
+    font-weight: bold;
+    background-color: #007979;
+    border: none;
+    padding: 7px 10px;
+    color: #eee;
+    margin-top: 13px;
+}
+main{
+    background-color: #eee;
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+    height: 60vh;
+    padding: 0px 30px;
+    gap: 50px;
+}
+
+.primary-btn{
+    font-family: "Work Sans";
+    font-weight: bold;
+    color: #eee;
+    font-size: 15px;
+    background-color: #007979;
+    border: none;
+    padding: 17px 20px;
+}
+
+.titulo2{
+    font-family: "Work Sans";
+    font-weight:550;
+    font-size: 25px;
+    color: #007979;
+    display: flex;
+    justify-content: center;
+}
+
+.servicios{
+    background-color: #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.contenedor-tarjetas{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.tarjeta{
+    background-color: #fff;
+    padding: 17px 20px;
+    border-radius: 8px;
+}
+
+.tarjeta img{
+    max-width: 100%;
+}
