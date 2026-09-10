@@ -87,12 +87,15 @@ main{
     flex-direction: row;
     justify-content: space-between;
     list-style: none;
+    padding: 0;
+    gap: 20px;
 }
 
 .tarjeta{
     background-color: #fff;
     padding: 17px 20px;
     border-radius: 8px;
+    flex: 1;
 }
 
 .tarjeta img{
