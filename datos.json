@@ -1,0 +1,8 @@
+{
+    "servivios":[
+        {"nombre": "Gestión de Inventario", "imagen": "./image1.jpg"},
+        {"nombre": "Gestión de Clientes", "imagen": "./image2.jpg"},
+        {"nombre": "Gestión de Empleados", "imagen": "./image3.jpg"},
+        {"nombre": "Gestión de Ventas", "imagen":"./image4.jpg"}
+    ]
+}
