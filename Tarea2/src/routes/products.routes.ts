@@ -2,7 +2,6 @@ import { Router } from "express";
 import { ProductController } from "../controllers/products.controller.ts";
 
 const router = Router();
-// OJO AQUÍ: La variable debe empezar con minúscula (productController)
 const productController = new ProductController();
 
 router.get('/getAll', productController.getAll);
