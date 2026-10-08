@@ -1,5 +1,6 @@
 import nodeUtil = require("node:util");
 import type { Request, Response } from "express";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
 import pool from "../conf/dbConnection.ts";
 import { CreateProductDto } from "../dto/CreateProductDto.ts";
 import { UpdatePriceDto } from "../dto/UpdatePriceDto.ts";
@@ -21,14 +22,13 @@ export class ProductController{
                 res.status(400).json({ message: "id must be a number"});
                 return;
             }
-            const [result, _] = await pool.execute('SELECT * FROM products WHERE id = ? AND active = TRUE', [id]);
-            const products = result as any[];
+            const [result] = await pool.execute<RowDataPacket[]>('SELECT * FROM products WHERE id = ? AND active = TRUE', [id]);
 
-            if(products.length === 0){
+            if(result.length === 0){
                 res.status(404).json({ message: "product not found"});
                 return;
             }
-            res.json(products[0]);
+            res.json(result[0]);
         }catch(err){
             console.error(err);
             res.status(500).json({message: "internal server error"});
@@ -42,12 +42,21 @@ export class ProductController{
             const query = `
                 INSERT INTO products (name, price, stock, description, brand, img, active)
                 VALUES (?, ?, ?, ?, ?, ?, TRUE)`;
-            const [result] = await pool.execute(query, [
-                dto.name, dto.price, dto.stock, dto.description, dto.brand || null, dto.img || null
-            ]) as any;
+            const [result] = await pool.execute<ResultSetHeader>(query, [
+                dto.name,
+                dto.price,
+                dto.stock,
+                dto.description,
+                dto.brand || null,
+                dto.img || null
+            ]);
             res.status(201).json({ message : "product created", id: result.insertId});
-        }catch (err:any){
-            res.status(400).json({ message : err.message || "bad request"})
+        }catch (err){
+            if(err instanceof Error){
+                res.status(400).json({ message: err.message});
+            }else{
+                res.status(500).json({ message: "internal server error"});
+            }
         }
     }
     async update (req: Request, res: Response){
@@ -60,17 +69,21 @@ export class ProductController{
 
             const dto= CreateProductDto.create(req.body);
             const query= 'UPDATE products SET name =?, price =?, stock =?, description =?, brand =?, img =? WHERE id =? AND active = TRUE';
-            const [result] = await pool.execute(query, [
+            const [result] = await pool.execute<ResultSetHeader>(query, [
                 dto.name, dto.price, dto.stock, dto.description, dto.brand || null, dto.img || null, id
-            ])as any;
+            ]);
 
             if(result.affectedRows > 0){
                 res.json({message: "product updated"});
                 return;
             }
             res.status(404).json({message: "product not found"});
-        }catch(err: any){
-            res.status(400).json({message: err.message || "bad request"});
+        }catch(err){
+            if(err instanceof Error){
+                res.status(400).json({ message: err.message});
+            }else{
+                res.status(500).json({ message: "internal server error"});
+            }
         }
     }
 
@@ -82,9 +95,9 @@ export class ProductController{
                 return;
             }
 
-            const [result] = await pool.execute('UPDATE products SET active = FALSE WHERE id = ? AND active = TRUE', [id]) as any;
+            const [result] = await pool.execute<ResultSetHeader>('UPDATE products SET active = FALSE WHERE id = ? AND active = TRUE', [id]);
             if (result.affectedRows > 0){
-                res.status(200).json({ message: 'product with id ${id} deleted'});
+                res.status(200).json({ message: `product with id ${id} deleted`});
                 return;
             }
             res.status(404).json({message: "product not found"});
@@ -102,15 +115,20 @@ export class ProductController{
             }
 
             const dto= UpdatePriceDto.create(req.body);
-            const [result] = await pool.execute('UPDATE products SET price =? WHERE id =? AND active = TRUE', [dto.price, id]) as any;
+            const [result] = await pool.execute<ResultSetHeader>('UPDATE products SET price =? WHERE id =? AND active = TRUE', [dto.price, id]);
 
             if (result.affectedRows >0){
                 res.json({message: "price updated"});
                 return;
             }
             res.status(404).json({message: "product not found"});
-        }catch (err : any){
-            res.status(400).json({message: err.message || "bad request"});
+        }catch (err){
+            if (err instanceof Error){
+                res.status(400).json({ message: err.message})
+            }else{
+                res.status(500).json({message: "internal server error"});
+            }
+            
         }
     }
 }
