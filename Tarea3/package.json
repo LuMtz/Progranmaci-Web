@@ -1,0 +1,14 @@
+{
+  "scripts": {
+  "start": "node src/index.js",
+  "dev": "tsx watch src/index.ts",
+  "test": "vitest run"
+},
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "vitest": "^5.1.0"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0"
+  }
+}
